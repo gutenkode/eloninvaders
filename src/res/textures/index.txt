@@ -1,0 +1,24 @@
+falcon2		falcon
+smoke		smoke
+ebullet		ebullet
+bbullet		bbullet
+bbullet2	bbullet2
+edeath		edeath
+endeavor	endeavor
+healthbar	healthbar
+expl	expl
+pad	pad
+e1	e1
+e2	e2
+e3	e3
+black	black
+
+elon	elon
+neil	neil
+title	title
+titleflash	titleflash
+prestart	prestart
+bg	bg
+bg2	bg2
+
+font/2p		font_1
