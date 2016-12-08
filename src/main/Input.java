@@ -35,7 +35,7 @@ public class Input {
         RIGHT(5),
         SPRINT(6),
         BACKSPACE(7),
-        ENTER(8),
+        ESCAPE(8),
         UP_ARROW(9),
         F5(10);
         
@@ -153,7 +153,7 @@ public class Input {
                 case GLFW.GLFW_KEY_BACKSPACE:
                     callbackAction(action, 7);
                     break;
-                case GLFW.GLFW_KEY_ENTER:
+                case GLFW.GLFW_KEY_ESCAPE:
                     callbackAction(action, 8);
                     break;
                 case GLFW.GLFW_KEY_F5:

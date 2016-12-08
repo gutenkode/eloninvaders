@@ -45,6 +45,8 @@ public class Title implements Scene {
                 Window.setFullscreen();
             }
         }
+        if (Input.isKeyNew(Input.Keys.ESCAPE))
+            Window.destroy();
 
         if (slide > 0)
             slide--;
@@ -92,6 +94,13 @@ public class Title implements Scene {
 
     @Override
     public void render(double delta) {
+        // there are cases where vsync runs unbound
+        // messy and imperfect solution
+        if (delta < .001) { // 60fps should be .016
+            System.out.println("Delta is "+delta+", disabling vsync...");
+            Window.setVsync(false);
+        }
+
         glClear(GL_COLOR_BUFFER_BIT);
         glDisable(GL_DEPTH_TEST);
 

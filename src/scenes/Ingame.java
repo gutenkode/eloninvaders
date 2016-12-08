@@ -49,12 +49,6 @@ public class Ingame implements Scene {
 
     @Override
     public void update(double delta) {
-        // messy and imperfect solution
-        if (delta < .001) { // 60fps should be .016
-            System.out.println("Delta is "+delta+", disabling vsync...");
-            Window.setVsync(false);
-        }
-
         if (player.health() != lasthits) {
             lasthits = player.health();
             hits.destroy();

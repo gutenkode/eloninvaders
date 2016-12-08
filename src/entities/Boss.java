@@ -178,7 +178,7 @@ public class Boss extends Entity {
             TextureMap.bindUnfiltered("healthbar");
             mat.setIdentity();
             mat.translate(pos[0], pos[1] - .36f);
-            mat.scale(.035f, .05f, 1);
+            mat.scale(.025f, .035f, 1);
             mat.translate(-maxhealth + 1, 0);
             for (int i = 0; i < health; i++) {
                 mat.makeCurrent();
