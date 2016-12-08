@@ -38,7 +38,7 @@ public class Title implements Scene {
 
     @Override
     public void update(double delta) {
-        if (Input.isKeyNew(Input.Keys.F5)){// && !System.getProperty("os.name").toLowerCase().contains("mac")) {
+        if (Input.isKeyNew(Input.Keys.F5) && !System.getProperty("os.name").toLowerCase().contains("mac")) {
             if (Window.isFullscreen()) {
                 Window.setWindowedPercent(.75, 171/128f);
             } else {

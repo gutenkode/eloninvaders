@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="eloninvaders:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/eloninvaders_jar</output-path>
+    <root id="archive" name="eloninvaders.jar">
+      <element id="module-output" name="eloninvaders" />
+      <element id="extracted-dir" path="$USER_HOME$/Documents/VorbisSPI1.0.3/vorbisspi1.0.3.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/Documents/VorbisSPI1.0.3/lib/jogg-0.0.7.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/Documents/VorbisSPI1.0.3/lib/jorbis-0.0.15.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/Documents/VorbisSPI1.0.3/lib/tritonus_share.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/Documents/lwjgl-3/jar/lwjgl.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../mote4/out/artifacts/mote4_jar/mote4.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
