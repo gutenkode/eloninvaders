@@ -29,7 +29,7 @@ public class Main {
             System.setProperty("java.awt.headless", "true"); // prevents ImageIO from hanging on OS X
 
         //Window.initWindowed(1920/2,1080/2);
-        Window.initWindowedPercent(.75, 171/128f);
+        Window.initWindowedPercent(.9, 171/128f);
         Window.setVsync(true);
 
         //main.Input.createCharCallback();
@@ -78,6 +78,8 @@ public class Main {
         Audio.loadWav("rocket");
         Audio.loadWav("ping");
         Audio.loadWav("pop");
+        Audio.loadWav("charge");
+        Audio.loadWav("laser");
 
         Audio.loadWav("inv1");
         Audio.loadWav("inv2");

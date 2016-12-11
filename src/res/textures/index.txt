@@ -6,6 +6,7 @@ bbullet2	bbullet2
 edeath		edeath
 endeavor	endeavor
 healthbar	healthbar
+laser	laser
 expl	expl
 pad	pad
 e1	e1

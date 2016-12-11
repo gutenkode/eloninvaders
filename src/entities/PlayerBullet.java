@@ -2,6 +2,7 @@ package entities;
 
 import main.Input;
 import mote4.util.audio.Audio;
+import scenes.Ingame;
 
 /**
  * Created by Peter on 12/2/16.
@@ -66,6 +67,7 @@ public class PlayerBullet extends Entity {
         if (pos[1] > 5) {
             reset = true;
             active = false;
+            Ingame.looseCredit();
         } else if (pos[1] < -.1) {
             //yvel *= .5;
             active = false;

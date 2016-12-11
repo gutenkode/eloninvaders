@@ -11,6 +11,8 @@ import mote4.util.matrix.Transform;
 import mote4.util.shader.ShaderMap;
 import mote4.util.shader.Uniform;
 import mote4.util.texture.TextureMap;
+import mote4.util.vertex.FontUtils;
+import mote4.util.vertex.mesh.Mesh;
 import mote4.util.vertex.mesh.MeshMap;
 
 import static org.lwjgl.opengl.GL11.*;
@@ -21,9 +23,10 @@ import static org.lwjgl.opengl.GL11.*;
 public class Title implements Scene {
 
     private Transform trans;
-    private int flash, slide, w,h, startdelay;
+    private int flash, slide, w,h, startdelay, vsyncdisable;
     private float bgfade;
     private boolean start;
+    private Mesh help;
 
     private Ingame ingame;
 
@@ -34,10 +37,26 @@ public class Title implements Scene {
         flash = 0;
         startdelay = 50;
         start = false;
+        vsyncdisable = 0;
+
+        help = FontUtils.createString("Press space",.5f,.95f,.03f,.04f);
     }
 
     @Override
     public void update(double delta) {
+        // there are cases where vsync runs unbound
+        // messy and imperfect solution
+        if (delta < .001) { // 60fps should be .016, .001 is one millisecond
+            vsyncdisable++;
+            if (vsyncdisable > 50) {
+                System.out.println("Delta has been <1ms for 50 frames, disabling vsync...");
+                Window.setVsync(false);
+                vsyncdisable = 0;
+            }
+            return;
+        } else
+            vsyncdisable = 0;
+
         if (Input.isKeyNew(Input.Keys.F5) && !System.getProperty("os.name").toLowerCase().contains("mac")) {
             if (Window.isFullscreen()) {
                 Window.setWindowedPercent(.75, 171/128f);
@@ -94,12 +113,6 @@ public class Title implements Scene {
 
     @Override
     public void render(double delta) {
-        // there are cases where vsync runs unbound
-        // messy and imperfect solution
-        if (delta < .001) { // 60fps should be .016
-            System.out.println("Delta is "+delta+", disabling vsync...");
-            Window.setVsync(false);
-        }
 
         glClear(GL_COLOR_BUFFER_BIT);
         glDisable(GL_DEPTH_TEST);
@@ -127,6 +140,13 @@ public class Title implements Scene {
             if (startdelay == 50) {
                 TextureMap.bindUnfiltered("elon");
                 MeshMap.render("quad");
+
+                if (slide == 0) {
+                    TextureMap.bindUnfiltered("font_1");
+                    trans.model.setIdentity();
+                    trans.model.makeCurrent();
+                    help.render();
+                }
             }
             if (start) {
                 trans.model.translate(startdelay / 50f, 0);
@@ -184,5 +204,6 @@ public class Title implements Scene {
     public void destroy() {
         if (ingame != null)
             ingame.destroy();
+        help.destroy();
     }
 }

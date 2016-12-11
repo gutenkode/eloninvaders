@@ -75,18 +75,23 @@ public class Player extends Entity {
             invulnerability = 50;
             //Entity.remove(e);
         } if (e instanceof EnemyBullet) {
-            if (invulnerability == 0) {
-                if (health > 0)
-                    health--;
-                Entity.add(new Explosion(e.pos[0],e.pos[1]));
-                invulnerability = 50;
-                Audio.playSfx("phit");
-            }
+            damage();
+            Entity.add(new Explosion(e.pos[0],e.pos[1]));
             Entity.remove(e);
         } else if (e instanceof PlayerBullet) {
             PlayerBullet pb = (PlayerBullet)e;
             pb.reset();
         }
+    }
+    public boolean damage() {
+        if (invulnerability == 0) {
+            if (health > 0)
+                health--;
+            invulnerability = 50;
+            Audio.playSfx("phit");
+            return true;
+        }
+        return false;
     }
 
     @Override

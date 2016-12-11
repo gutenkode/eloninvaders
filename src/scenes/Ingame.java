@@ -25,11 +25,14 @@ import static sun.audio.AudioPlayer.player;
 public class Ingame implements Scene {
 
     private Transform trans;
-    private Mesh text, hits, gameover, gamewon;
+    private Mesh hits, gameover, gamewon;
     private Player player;
     private Boss boss;
     private int lasthits = 0;
     private boolean loose = false, win = false;
+
+    private static Mesh text;
+    private static double credit;
 
     public Ingame() {
         trans = new Transform();
@@ -39,12 +42,23 @@ public class Ingame implements Scene {
         Entity.add(boss);
         Enemy.initEnemyState(6, 10);
 
-        text = FontUtils.createString("CREDIT: 11BN",-1.3f,-.95f,.08f,.08f);
+        credit = 11.5;
+
+        //text = FontUtils.createString("CREDIT: 11BN",-1.3f,-.95f,.08f,.08f);
+        text = FontUtils.createString("CREDIT: "+credit+"BN",-1.3f,-.95f,.08f,.08f);
         lasthits = player.health();
         hits = FontUtils.createString("HP: "+lasthits,.7f,-.95f,.08f,.08f);
 
         gameover = FontUtils.createString("GAME OVER",-.7f,0,.16f,.16f);
         gamewon = FontUtils.createString("    YOU WIN\nCONGRATULATIONS",-1.2f,-.2f,.16f,.16f);
+    }
+    public static void looseCredit() {
+        credit -= .5;
+        String s = "";
+        //if (Math.abs(credit)%2 == 1)
+        //    s = ".5";
+        text.destroy();
+        text = FontUtils.createString("CREDIT: "+credit+s+"BN",-1.3f,-.95f,.08f,.08f);
     }
 
     @Override

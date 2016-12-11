@@ -20,8 +20,11 @@ public class Boss extends Entity {
             health, maxhealth,
             invulnerability = 0,
             attack1count = 3, attack1cooldown,
-            phase;
+            phase,
+            laserAnim, laserCycle;
     private State state;
+    private final boolean playAudio = true;
+    private boolean laseractive = false, lasercharge = false;
 
     public Boss() {
         pos[0] = 0;
@@ -44,6 +47,8 @@ public class Boss extends Entity {
     public void update() {
         if (invulnerability > 0)
             invulnerability--;
+        laserAnim++;
+        laserAnim %= 10;
 
         switch (state) {
             case WAIT:
@@ -51,7 +56,8 @@ public class Boss extends Entity {
                     if (pos[1] < -.4)
                         pos[1] += .005; // enter the screen
                     else {
-                        JavaAudio.playOgg("murph");
+                        if (playAudio)
+                            JavaAudio.playOgg("murph");
                         frame = 0;
                         state = State.FILL;
                     }
@@ -64,13 +70,16 @@ public class Boss extends Entity {
                     Audio.playSfx("ping");
                     if (health == maxhealth) {
                         frame = 0;
+                        laserCycle = 0;
                         state = State.BATTLE;
                     }
                 }
                 break;
             case BATTLE:
-                if (frame == 0 && phase == 0)
-                    JavaAudio.playOgg("dayonedark");
+                if (frame == 0 && phase == 0) {
+                    if (playAudio)
+                        JavaAudio.playOgg("dayonedark");
+                }
                 frame++; // global frame count
 
                 if (frame < 30) return;
@@ -81,18 +90,30 @@ public class Boss extends Entity {
 
                 if (frame < 55) return;
 
-                // radial attack
-                if (frame % 40 == 0) {
-                    Audio.playSfx("bshoot");
-                    for (int i = 0; i < 6; i++) {
-                        double angle = (i / 6d) * Math.PI * 2;
-                        Entity.add(new BossBullet(pos[0], pos[1], angle + cycle, "bbullet", .007f + .005f * phase));
+                // radial attack - red
+                if (phase != 0) {
+                    // second form
+                    if (frame % 30 == 0) {
+                        Audio.playSfx("bshoot");
+                        for (int i = 0; i < 3; i++) {
+                            double angle = (i / 3d) * Math.PI * 2;
+                            Entity.add(new BossBullet(pos[0], pos[1], angle + cycle, "bbullet", .0085f));
+                            Entity.add(new BossBullet(pos[0], pos[1], angle - cycle, "bbullet", .0085f));
+                        }
+                    }
+                } else {
+                    // first form
+                    if (frame % 40 == 0) {
+                        Audio.playSfx("bshoot");
+                        for (int i = 0; i < 6; i++) {
+                            double angle = (i / 6d) * Math.PI * 2;
+                            Entity.add(new BossBullet(pos[0], pos[1], angle + cycle, "bbullet", .007f));
+                        }
                     }
                 }
-
                 if (phase <= 0) return;
 
-                // directed attack
+                // directed attack - blue
                 if (attack1cooldown <= 0)
                     if (frame % 10 == 0)
                     {
@@ -111,6 +132,34 @@ public class Boss extends Entity {
                         Audio.playSfx("bshoot");
                     }
                 attack1cooldown--;
+
+                if (health > 6) return;
+
+                // laser attack
+                laserCycle++;
+                laserCycle %= 300;
+                if (laserCycle >= 150) {
+                    if (laserCycle == 150)
+                        Audio.playSfx("charge");
+                    lasercharge = true;
+                    if (laserCycle > 200) {
+                        laseractive = true;
+                        if (frame % 15 == 0)
+                            Audio.playSfx("laser");
+                        Player p = Entity.player();
+                        // if the player is under the ship's position
+                        // laser is a line aligned with the ship's position
+                        if (p.pos[0]+p.scale[0] > pos[0] && p.pos[0]-p.scale[0] < pos[0]) {
+                            p.damage();
+                            if (frame % 10 == 0)//if (p.damage())
+                                Entity.add(new Explosion(pos[0],p.pos[1]));
+                        }
+                    }
+                } else {
+                    lasercharge = false;
+                    laseractive = false;
+                }
+
                 break;
             case DEAD:
                 frame++;
@@ -153,6 +202,8 @@ public class Boss extends Entity {
                     Audio.playSfx("bhit");
                     health--;
                     if (health <= 0) {
+                        lasercharge = false;
+                        laseractive = false;
                         Entity.removeEbullets();
                         health = 0;
                         frame = 0;
@@ -188,6 +239,26 @@ public class Boss extends Entity {
                 mat.translate(2, 0);
             }
             Uniform.varFloat("colorMult", 1, 1, 1, 1);
+        }
+
+        if (laseractive) {
+            TextureMap.bindUnfiltered("laser");
+            Uniform.varFloat("spriteInfo", 3, 1, laserAnim / 3);
+            mat.setIdentity();
+            mat.translate(pos[0], pos[1]);
+            mat.scale(.04f, .9f, 1);
+            mat.translate(0, 1);
+            mat.makeCurrent();
+            MeshMap.render("quad");
+        } else if (lasercharge) {
+            TextureMap.bindUnfiltered("laser");
+            Uniform.varFloat("spriteInfo", 3, 1, laserAnim / 3);
+            mat.setIdentity();
+            mat.translate(pos[0], pos[1]);
+            mat.scale(.002f, .9f, 1);
+            mat.translate(0, 1);
+            mat.makeCurrent();
+            MeshMap.render("quad");
         }
     }
 
