@@ -1,0 +1,18 @@
+edeath		invaderkilled.wav
+phit		firework.wav
+pshoot		shoot.wav
+bhit 		bigboom.wav
+bshoot		pew.wav
+rocket		rocket.wav
+ping		ping.wav
+pop		pop.wav
+charge		charge.wav
+laser		laser.wav
+
+inv1		inv1.wav
+inv2		inv2.wav
+inv3		inv3.wav
+inv4		inv4.wav
+
+murph		murph.ogg
+dayonedark	dayonedark.ogg

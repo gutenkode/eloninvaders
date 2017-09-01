@@ -5,7 +5,7 @@ import entities.Entity;
 import main.Input;
 import mote4.scenegraph.Scene;
 import mote4.scenegraph.Window;
-import mote4.util.audio.Audio;
+import mote4.util.audio.AudioPlayback;
 import mote4.util.audio.JavaAudio;
 import mote4.util.matrix.Transform;
 import mote4.util.shader.ShaderMap;
@@ -43,7 +43,7 @@ public class Title implements Scene {
     }
 
     @Override
-    public void update(double delta) {
+    public void update(double time, double delta) {
         // there are cases where vsync runs unbound
         // messy and imperfect solution
         if (delta < .001) { // 60fps should be .016, .001 is one millisecond
@@ -75,7 +75,7 @@ public class Title implements Scene {
         }
         if (ingame != null)
         {
-            ingame.update(delta);
+            ingame.update(time, delta);
             if (ingame.canResetGame() && Input.isKeyNew(Input.Keys.YES)) {
                 ingame.destroy();
                 ingame = null;
@@ -97,8 +97,8 @@ public class Title implements Scene {
                 else if (Input.isKeyNew(Input.Keys.YES)) {
                     ingame = new Ingame();
                     ingame.framebufferResized(w, h);
-                    ingame.update(delta);
-                    Audio.playSfx("pop");
+                    ingame.update(time, delta);
+                    AudioPlayback.playSfx("pop");
                     startdelay = 50;
                 }
             }
@@ -106,13 +106,13 @@ public class Title implements Scene {
             {
                 start = true;
                 startdelay = 50;
-                Audio.playSfx("pop");
+                AudioPlayback.playSfx("pop");
             }
         }
     }
 
     @Override
-    public void render(double delta) {
+    public void render(double time, double delta) {
 
         glClear(GL_COLOR_BUFFER_BIT);
         glDisable(GL_DEPTH_TEST);
@@ -135,7 +135,7 @@ public class Title implements Scene {
                 MeshMap.render("quad");
             }
 
-            ingame.render(delta);
+            ingame.render(time, delta);
         } else {
             if (startdelay == 50) {
                 TextureMap.bindUnfiltered("elon");

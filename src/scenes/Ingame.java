@@ -5,19 +5,13 @@ import entities.Enemy;
 import entities.Entity;
 import entities.Player;
 import mote4.scenegraph.Scene;
-import mote4.scenegraph.Window;
-import mote4.util.audio.JavaAudio;
+import mote4.util.audio.AudioPlayback;
 import mote4.util.matrix.Transform;
 import mote4.util.shader.ShaderMap;
 import mote4.util.shader.Uniform;
 import mote4.util.texture.TextureMap;
 import mote4.util.vertex.FontUtils;
-import mote4.util.vertex.builder.StaticMeshBuilder;
 import mote4.util.vertex.mesh.Mesh;
-import mote4.util.vertex.mesh.MeshMap;
-
-import static org.lwjgl.opengl.GL11.*;
-import static sun.audio.AudioPlayer.player;
 
 /**
  * Created by Peter on 12/2/16.
@@ -62,14 +56,14 @@ public class Ingame implements Scene {
     }
 
     @Override
-    public void update(double delta) {
+    public void update(double time, double delta) {
         if (player.health() != lasthits) {
             lasthits = player.health();
             hits.destroy();
             hits = FontUtils.createString("HP: " + lasthits, .7f, -.95f, .08f, .08f);
 
             if (lasthits <= 0 && !win) {
-                JavaAudio.stopAudio("dayonedark");
+                AudioPlayback.stopMusic();
                 loose = true;
             }
         }
@@ -79,7 +73,7 @@ public class Ingame implements Scene {
     }
 
     @Override
-    public void render(double delta) {
+    public void render(double time, double delta) {
         //glClear(GL_COLOR_BUFFER_BIT);
         //glDisable(GL_DEPTH_TEST);
 

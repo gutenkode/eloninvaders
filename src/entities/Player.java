@@ -1,8 +1,7 @@
 package entities;
 
 import main.Input;
-import mote4.util.audio.Audio;
-import mote4.util.audio.JavaAudio;
+import mote4.util.audio.AudioPlayback;
 import mote4.util.matrix.TransformationMatrix;
 
 /**
@@ -42,7 +41,7 @@ public class Player extends Entity {
                 float r2 = (float)Math.random()*.1f-.05f;
                 Entity.add(new Explosion(pos[0]+r1, pos[1]+r2));
                 if (frame < 240)
-                    Audio.playSfx("phit");
+                    AudioPlayback.playSfx("phit");
             }
             pos[1] += .002;
         }
@@ -88,7 +87,7 @@ public class Player extends Entity {
             if (health > 0)
                 health--;
             invulnerability = 50;
-            Audio.playSfx("phit");
+            AudioPlayback.playSfx("phit");
             return true;
         }
         return false;
@@ -103,7 +102,7 @@ public class Player extends Entity {
     public int health() { return health; }
 
     public void kill() {
-        JavaAudio.stopAudio("dayonedark");
+        AudioPlayback.stopMusic();
         health = 0;
         invulnerability = 50;
     }

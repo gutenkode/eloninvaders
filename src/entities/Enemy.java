@@ -1,12 +1,7 @@
 package entities;
 
-import main.Input;
-import mote4.util.audio.Audio;
+import mote4.util.audio.AudioPlayback;
 import mote4.util.matrix.TransformationMatrix;
-import mote4.util.shader.Uniform;
-
-import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * Created by Peter on 12/2/16.
@@ -80,7 +75,7 @@ public class Enemy extends Entity {
                 ((PlayerBullet) e).deactivate();
                 Entity.remove(this);
                 Entity.add(new EnemyDeath(pos[0], pos[1]));
-                Audio.playSfx("edeath");
+                AudioPlayback.playSfx("edeath");
             }
         }
     }
@@ -135,7 +130,7 @@ public class Enemy extends Entity {
         sounddelay--;
         if (sounddelay <= 0) {
             sounddelay = numEnemies+5;
-            Audio.playSfx("inv"+(soundind+1));
+            AudioPlayback.playSfx("inv"+(soundind+1));
             soundind++;
             soundind %= 4;
         }

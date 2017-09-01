@@ -2,20 +2,15 @@ package main;
 
 import mote4.scenegraph.Window;
 import mote4.util.audio.ALContext;
-import mote4.util.audio.Audio;
-import mote4.util.audio.JavaAudio;
+import mote4.util.audio.AudioLoader;
 import mote4.util.shader.ShaderUtils;
 import mote4.util.texture.TextureMap;
 import mote4.util.vertex.FontUtils;
 import mote4.util.vertex.builder.StaticMeshBuilder;
 import mote4.util.vertex.mesh.MeshMap;
-import scenes.*;
-
-import javax.sound.sampled.AudioFileFormat;
-import javax.sound.sampled.AudioSystem;
+import scenes.Title;
 
 import static org.lwjgl.glfw.GLFW.GLFW_DONT_CARE;
-import static org.lwjgl.glfw.GLFW.glfwSetWindowAspectRatio;
 import static org.lwjgl.glfw.GLFW.glfwSetWindowSizeLimits;
 import static org.lwjgl.opengl.GL11.*;
 
@@ -28,11 +23,10 @@ public class Main {
         if (System.getProperty("os.name").toLowerCase().contains("mac"))
             System.setProperty("java.awt.headless", "true"); // prevents ImageIO from hanging on OS X
 
-        //Window.initWindowed(1920/2,1080/2);
+        Window.setTitle("Elon Invaders");
         Window.initWindowedPercent(.9, 171/128f);
         Window.setVsync(true);
 
-        //main.Input.createCharCallback();
         Input.createKeyCallback();
         Input.pushLock(Input.Lock.PLAYER);
         loadResources();
@@ -44,17 +38,6 @@ public class Main {
         glfwSetWindowSizeLimits(Window.getWindowID(), 640, 360, GLFW_DONT_CARE, GLFW_DONT_CARE);
         //glfwSetWindowAspectRatio(Window.getWindowID(), 171,128);
 
-
-        //FBO ingame = new FBO(853,480,true,false,null); // 640x480, PS1 resolution
-        //FBO ingame = new FBO(1280/2,720/2,true,false,null);
-        //FBO ingame = new FBO(1920/3,1080/3,true,false,null);
-        //ingame.addToTextureMap("fbo_scene");
-        /*
-        Layer l = new Layer(new EmptyTarget());
-        l.addScene(new Ingame());
-        Window.addLayer(l);
-
-        Window.addScene(new Post());*/
         Window.addScene(new Title());
         Window.loop();
     }
@@ -70,20 +53,22 @@ public class Main {
         MeshMap.add(StaticMeshBuilder.loadQuadMesh(), "quad");
 
         ALContext.initContext();
-        Audio.loadWav("invaderkilled","edeath");
-        Audio.loadWav("firework","phit");
-        Audio.loadWav("shoot","pshoot");
-        Audio.loadWav("bigboom","bhit");
-        Audio.loadWav("pew","bshoot");
-        Audio.loadWav("rocket");
-        Audio.loadWav("ping");
-        Audio.loadWav("pop");
-        Audio.loadWav("charge");
-        Audio.loadWav("laser");
+        AudioLoader.loadIndex("index.txt");
+        /*
+        AudioLoader.loadWav("invaderkilled","edeath");
+        AudioLoader.loadWav("firework","phit");
+        AudioLoader.loadWav("shoot","pshoot");
+        AudioLoader.loadWav("bigboom","bhit");
+        AudioLoader.loadWav("pew","bshoot");
+        AudioLoader.loadWav("rocket");
+        AudioLoader.loadWav("ping");
+        AudioLoader.loadWav("pop");
+        AudioLoader.loadWav("charge");
+        AudioLoader.loadWav("laser");
 
-        Audio.loadWav("inv1");
-        Audio.loadWav("inv2");
-        Audio.loadWav("inv3");
-        Audio.loadWav("inv4");
+        AudioLoader.loadWav("inv1");
+        AudioLoader.loadWav("inv2");
+        AudioLoader.loadWav("inv3");
+        AudioLoader.loadWav("inv4");*/
     }
 }

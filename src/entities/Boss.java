@@ -1,7 +1,6 @@
 package entities;
 
-import mote4.util.audio.Audio;
-import mote4.util.audio.JavaAudio;
+import mote4.util.audio.AudioPlayback;
 import mote4.util.matrix.TransformationMatrix;
 import mote4.util.shader.Uniform;
 import mote4.util.texture.TextureMap;
@@ -57,7 +56,7 @@ public class Boss extends Entity {
                         pos[1] += .005; // enter the screen
                     else {
                         if (playAudio)
-                            JavaAudio.playOgg("murph");
+                            AudioPlayback.playMusic("murph",false);
                         frame = 0;
                         state = State.FILL;
                     }
@@ -67,7 +66,7 @@ public class Boss extends Entity {
                 frame++; // global frame count
                 if (frame > 100 && frame % 10 == 0) {
                     health++;
-                    Audio.playSfx("ping");
+                    AudioPlayback.playSfx("ping");
                     if (health == maxhealth) {
                         frame = 0;
                         laserCycle = 0;
@@ -78,7 +77,7 @@ public class Boss extends Entity {
             case BATTLE:
                 if (frame == 0 && phase == 0) {
                     if (playAudio)
-                        JavaAudio.playOgg("dayonedark");
+                        AudioPlayback.playMusic("dayonedark",true);
                 }
                 frame++; // global frame count
 
@@ -94,7 +93,7 @@ public class Boss extends Entity {
                 if (phase != 0) {
                     // second form
                     if (frame % 30 == 0) {
-                        Audio.playSfx("bshoot");
+                        AudioPlayback.playSfx("bshoot");
                         for (int i = 0; i < 3; i++) {
                             double angle = (i / 3d) * Math.PI * 2;
                             Entity.add(new BossBullet(pos[0], pos[1], angle + cycle, "bbullet", .0085f));
@@ -104,7 +103,7 @@ public class Boss extends Entity {
                 } else {
                     // first form
                     if (frame % 40 == 0) {
-                        Audio.playSfx("bshoot");
+                        AudioPlayback.playSfx("bshoot");
                         for (int i = 0; i < 6; i++) {
                             double angle = (i / 6d) * Math.PI * 2;
                             Entity.add(new BossBullet(pos[0], pos[1], angle + cycle, "bbullet", .007f));
@@ -129,7 +128,7 @@ public class Boss extends Entity {
                         Entity.add(new BossBullet(pos[0], pos[1], angle+.33f, "bbullet2", .017f));
                         Entity.add(new BossBullet(pos[0], pos[1], angle-.33f, "bbullet2", .017f));
 
-                        Audio.playSfx("bshoot");
+                        AudioPlayback.playSfx("bshoot");
                     }
                 attack1cooldown--;
 
@@ -140,12 +139,12 @@ public class Boss extends Entity {
                 laserCycle %= 300;
                 if (laserCycle >= 150) {
                     if (laserCycle == 150)
-                        Audio.playSfx("charge");
+                        AudioPlayback.playSfx("charge");
                     lasercharge = true;
                     if (laserCycle > 200) {
                         laseractive = true;
                         if (frame % 15 == 0)
-                            Audio.playSfx("laser");
+                            AudioPlayback.playSfx("laser");
                         Player p = Entity.player();
                         // if the player is under the ship's position
                         // laser is a line aligned with the ship's position
@@ -168,7 +167,7 @@ public class Boss extends Entity {
                     float r2 = (float)Math.random()*.6f-.3f;
                     Entity.add(new Explosion(pos[0]+r1, pos[1]+r2));
                     if (frame % 15 == 0)
-                        Audio.playSfx("bhit");
+                        AudioPlayback.playSfx("bhit");
                 }
                 if (invulnerability <= 0) {
                     phase++;
@@ -182,7 +181,7 @@ public class Boss extends Entity {
                 }
                 break;
             case WIN:
-                JavaAudio.stopAudio("dayonedark");
+                AudioPlayback.stopMusic();
                 invulnerability = 99999;
                 break;
         }
@@ -199,7 +198,7 @@ public class Boss extends Entity {
                     invulnerability = 30;
                     pb.deactivate();
                     Entity.add(new Explosion(e.pos[0], e.pos[1]));
-                    Audio.playSfx("bhit");
+                    AudioPlayback.playSfx("bhit");
                     health--;
                     if (health <= 0) {
                         lasercharge = false;

@@ -12,12 +12,12 @@ public class Post implements Scene {
     }
 
     @Override
-    public void update(double delta) {
+    public void update(double time, double delta) {
 
     }
 
     @Override
-    public void render(double delta) {
+    public void render(double time, double delta) {
 
     }
 

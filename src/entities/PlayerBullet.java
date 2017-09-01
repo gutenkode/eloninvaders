@@ -1,7 +1,7 @@
 package entities;
 
 import main.Input;
-import mote4.util.audio.Audio;
+import mote4.util.audio.AudioPlayback;
 import scenes.Ingame;
 
 /**
@@ -85,7 +85,7 @@ public class PlayerBullet extends Entity {
 
     public void reset() {
         if (!active) {
-            Audio.playSfx("pop");
+            AudioPlayback.playSfx("pop");
             active = true;
             reset = true;
             xvel = 0;
@@ -94,8 +94,8 @@ public class PlayerBullet extends Entity {
     }
     public void fire(float xvel) {
         if (reset) {
-            Audio.playSfx("rocket");
-            Audio.playSfx("pshoot");
+            AudioPlayback.playSfx("rocket");
+            AudioPlayback.playSfx("pshoot");
             this.xvel = xvel;
             active = true;
             reset = false;
