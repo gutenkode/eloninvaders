@@ -6,7 +6,6 @@ import main.Input;
 import mote4.scenegraph.Scene;
 import mote4.scenegraph.Window;
 import mote4.util.audio.AudioPlayback;
-import mote4.util.audio.JavaAudio;
 import mote4.util.matrix.Transform;
 import mote4.util.shader.ShaderMap;
 import mote4.util.shader.Uniform;
@@ -46,6 +45,7 @@ public class Title implements Scene {
     public void update(double time, double delta) {
         // there are cases where vsync runs unbound
         // messy and imperfect solution
+        /*
         if (delta < .001) { // 60fps should be .016, .001 is one millisecond
             vsyncdisable++;
             if (vsyncdisable > 50) {
@@ -56,7 +56,7 @@ public class Title implements Scene {
             return;
         } else
             vsyncdisable = 0;
-
+        */
         if (Input.isKeyNew(Input.Keys.F5) && !System.getProperty("os.name").toLowerCase().contains("mac")) {
             if (Window.isFullscreen()) {
                 Window.setWindowedPercent(.75, 171/128f);
@@ -73,6 +73,7 @@ public class Title implements Scene {
             flash++;
             flash %= 90;
         }
+
         if (ingame != null)
         {
             ingame.update(time, delta);
@@ -85,9 +86,9 @@ public class Title implements Scene {
                 start = false;
                 Entity.resetAll();
                 ShaderMap.use("texture");
-                Uniform.varFloat("colorMult",1,1,1,1);
+                Uniform.vec("colorMult",1,1,1,1);
 
-                JavaAudio.stopAudio("dayonedark");
+                AudioPlayback.stopMusic();
             }
         }
         else {
@@ -118,16 +119,16 @@ public class Title implements Scene {
         glDisable(GL_DEPTH_TEST);
 
         ShaderMap.use("texture");
-        trans.makeCurrent();
+        trans.bind();
 
         if (ingame != null) {
             if (Enemy.numEnemies() == 0) {
                 TextureMap.bindUnfiltered("bg2");
                 MeshMap.render("quad");
-                Uniform.varFloat("colorMult",1,1,1,bgfade);
+                Uniform.vec("colorMult",1,1,1,bgfade);
                 TextureMap.bindUnfiltered("bg");
                 MeshMap.render("quad");
-                Uniform.varFloat("colorMult",1,1,1,1);
+                Uniform.vec("colorMult",1,1,1,1);
                 if (bgfade > 0)
                     bgfade -= .01;
             } else {
@@ -144,30 +145,30 @@ public class Title implements Scene {
                 if (slide == 0) {
                     TextureMap.bindUnfiltered("font_1");
                     trans.model.setIdentity();
-                    trans.model.makeCurrent();
+                    trans.model.bind();
                     help.render();
                 }
             }
             if (start) {
                 trans.model.translate(startdelay / 50f, 0);
-                trans.model.makeCurrent();
+                trans.model.bind();
                 TextureMap.bindUnfiltered("neil");
                 MeshMap.render("quad");
                 trans.model.setIdentity();
 
                 trans.model.translate(-startdelay / 50f, 0);
-                trans.model.makeCurrent();
+                trans.model.bind();
                 TextureMap.bindUnfiltered("prestart");
                 MeshMap.render("quad");
                 trans.model.setIdentity();
-                trans.model.makeCurrent();
+                trans.model.bind();
             } else {
                 trans.model.translate(0, slide / 100f);
-                trans.model.makeCurrent();
+                trans.model.bind();
                 TextureMap.bindUnfiltered("title");
                 MeshMap.render("quad");
                 trans.model.setIdentity();
-                trans.model.makeCurrent();
+                trans.model.bind();
 
                 if (flash > 50) {
                     TextureMap.bindUnfiltered("titleflash");
@@ -178,11 +179,11 @@ public class Title implements Scene {
 
         trans.model.setIdentity();
         trans.model.translate(2, 0);
-        trans.makeCurrent();
+        trans.bind();
         TextureMap.bindUnfiltered("black");
         MeshMap.render("quad");
         trans.model.translate(-4, 0);
-        trans.makeCurrent();
+        trans.bind();
         MeshMap.render("quad");
         trans.model.setIdentity();
     }

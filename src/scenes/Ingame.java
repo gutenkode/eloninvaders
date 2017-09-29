@@ -80,14 +80,14 @@ public class Ingame implements Scene {
         ShaderMap.use("texture");
         TextureMap.bindUnfiltered("font_1");
         trans.model.setIdentity();
-        trans.makeCurrent();
+        trans.bind();
         text.render();
         hits.render();
 
         ShaderMap.use("sprite");
         //trans.view.rotate(.1f,0,0,1);
         trans.model.setIdentity();
-        trans.makeCurrent();
+        trans.bind();
 
         Entity.renderAll(trans.model);
 
@@ -95,13 +95,13 @@ public class Ingame implements Scene {
             ShaderMap.use("texture");
             TextureMap.bindUnfiltered("font_1");
             trans.model.setIdentity();
-            trans.makeCurrent();
+            trans.bind();
             if (loose) {
-                Uniform.varFloat("colorMult",0,0,0,1);
+                Uniform.vec("colorMult",0,0,0,1);
                 gameover.render();
                 trans.model.translate(-.02f,-.02f);
-                trans.model.makeCurrent();
-                Uniform.varFloat("colorMult",1,0,0,1);
+                trans.model.bind();
+                Uniform.vec("colorMult",1,0,0,1);
                 gameover.render();
             }
             if (win)

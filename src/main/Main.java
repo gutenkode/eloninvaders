@@ -1,6 +1,7 @@
 package main;
 
 import mote4.scenegraph.Window;
+import mote4.util.ErrorUtils;
 import mote4.util.audio.ALContext;
 import mote4.util.audio.AudioLoader;
 import mote4.util.shader.ShaderUtils;
@@ -20,6 +21,7 @@ import static org.lwjgl.opengl.GL11.*;
 public class Main {
 
     public static void main(String[] args) {
+        ErrorUtils.debug(true);
         if (System.getProperty("os.name").toLowerCase().contains("mac"))
             System.setProperty("java.awt.headless", "true"); // prevents ImageIO from hanging on OS X
 
@@ -33,7 +35,6 @@ public class Main {
 
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        //glEnable(GL_CULL_FACE);
 
         glfwSetWindowSizeLimits(Window.getWindowID(), 640, 360, GLFW_DONT_CARE, GLFW_DONT_CARE);
         //glfwSetWindowAspectRatio(Window.getWindowID(), 171,128);
@@ -41,6 +42,7 @@ public class Main {
         Window.addScene(new Title());
         Window.loop();
     }
+
     private static void loadResources() {
         ShaderUtils.addProgram("texture.vert", "texture.frag", "texture");
         ShaderUtils.addProgram("sprite.vert", "sprite.frag", "sprite");
@@ -54,21 +56,5 @@ public class Main {
 
         ALContext.initContext();
         AudioLoader.loadIndex("index.txt");
-        /*
-        AudioLoader.loadWav("invaderkilled","edeath");
-        AudioLoader.loadWav("firework","phit");
-        AudioLoader.loadWav("shoot","pshoot");
-        AudioLoader.loadWav("bigboom","bhit");
-        AudioLoader.loadWav("pew","bshoot");
-        AudioLoader.loadWav("rocket");
-        AudioLoader.loadWav("ping");
-        AudioLoader.loadWav("pop");
-        AudioLoader.loadWav("charge");
-        AudioLoader.loadWav("laser");
-
-        AudioLoader.loadWav("inv1");
-        AudioLoader.loadWav("inv2");
-        AudioLoader.loadWav("inv3");
-        AudioLoader.loadWav("inv4");*/
     }
 }

@@ -231,7 +231,7 @@ public class Boss extends Entity {
             mat.scale(.025f, .035f, 1);
             mat.translate(-maxhealth + 1, 0);
             for (int i = 0; i < health; i++) {
-                mat.makeCurrent();
+                mat.bind();
                 float cval = (float) i / maxhealth;
                 Uniform.varFloat("colorMult", 1 - cval, cval, 0, 1);
                 MeshMap.render("quad");
@@ -247,7 +247,7 @@ public class Boss extends Entity {
             mat.translate(pos[0], pos[1]);
             mat.scale(.04f, .9f, 1);
             mat.translate(0, 1);
-            mat.makeCurrent();
+            mat.bind();
             MeshMap.render("quad");
         } else if (lasercharge) {
             TextureMap.bindUnfiltered("laser");
@@ -256,7 +256,7 @@ public class Boss extends Entity {
             mat.translate(pos[0], pos[1]);
             mat.scale(.002f, .9f, 1);
             mat.translate(0, 1);
-            mat.makeCurrent();
+            mat.bind();
             MeshMap.render("quad");
         }
     }

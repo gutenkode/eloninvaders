@@ -18,11 +18,11 @@ public abstract class Entity {
 
     public abstract void update();
     public void render(TransformationMatrix mat) {
-        Uniform.varFloat("spriteInfo",numSprites,1,spriteInd);
+        Uniform.vec("spriteInfo",numSprites,1,spriteInd);
         TextureMap.bindUnfiltered(texName);
         mat.translate(pos[0],pos[1]);
         mat.scale(scale[0],scale[1],1);
-        mat.makeCurrent();
+        mat.bind();
         MeshMap.render("quad");
     }
     public final boolean collides(Entity e) {
