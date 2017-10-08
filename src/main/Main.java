@@ -22,8 +22,6 @@ public class Main {
 
     public static void main(String[] args) {
         ErrorUtils.debug(true);
-        if (System.getProperty("os.name").toLowerCase().contains("mac"))
-            System.setProperty("java.awt.headless", "true"); // prevents ImageIO from hanging on OS X
 
         Window.setTitle("Elon Invaders");
         Window.initWindowedPercent(.9, 171/128f);

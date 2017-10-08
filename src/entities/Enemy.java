@@ -1,5 +1,6 @@
 package entities;
 
+import main.Input;
 import mote4.util.audio.AudioPlayback;
 import mote4.util.matrix.TransformationMatrix;
 
@@ -31,8 +32,8 @@ public class Enemy extends Entity {
     public void update() {
         pos[0] -= (pos[0]-xpos)/3;
         pos[1] -= (pos[1]-ypos)/3;
-        /*
-        if (Input.isKeyDown(Input.Keys.NO)) {
+
+        /*if (Input.isKeyDown(Input.Keys.NO)) {
             Entity.remove(this);
             Entity.add(new EnemyDeath(pos[0], pos[1]));
         }*/
@@ -97,7 +98,6 @@ public class Enemy extends Entity {
     private static int numEnemies = 0,
             sounddelay = 0, soundind = 0;
     private static Enemy[][] enemies;
-    //private static ArrayList<Enemy> enemies = new ArrayList<>(); // TODO switch from an ArrayList to a static array
     private static boolean moveDown = false, moveDownTurn = false, newMoveDir;
     private static int xt, yt;
 

@@ -217,14 +217,14 @@ public class Boss extends Entity {
     @Override
     public void render(TransformationMatrix mat) {
         if (invulnerability > 0)
-            Uniform.varFloat("colorMult",1,.5f,.5f,1);
+            Uniform.vec("colorMult",1,.5f,.5f,1);
         if (invulnerability/5 % 2 == 0)
             super.render(mat);
         if (invulnerability > 0)
-            Uniform.varFloat("colorMult",1,1,1,1);
+            Uniform.vec("colorMult",1,1,1,1);
 
         if (health > 0) {
-            Uniform.varFloat("spriteInfo", 1, 1, 0);
+            Uniform.vec("spriteInfo", 1, 1, 0);
             TextureMap.bindUnfiltered("healthbar");
             mat.setIdentity();
             mat.translate(pos[0], pos[1] - .36f);
@@ -233,16 +233,16 @@ public class Boss extends Entity {
             for (int i = 0; i < health; i++) {
                 mat.bind();
                 float cval = (float) i / maxhealth;
-                Uniform.varFloat("colorMult", 1 - cval, cval, 0, 1);
+                Uniform.vec("colorMult", 1 - cval, cval, 0, 1);
                 MeshMap.render("quad");
                 mat.translate(2, 0);
             }
-            Uniform.varFloat("colorMult", 1, 1, 1, 1);
+            Uniform.vec("colorMult", 1, 1, 1, 1);
         }
 
         if (laseractive) {
             TextureMap.bindUnfiltered("laser");
-            Uniform.varFloat("spriteInfo", 3, 1, laserAnim / 3);
+            Uniform.vec("spriteInfo", 3, 1, laserAnim / 3);
             mat.setIdentity();
             mat.translate(pos[0], pos[1]);
             mat.scale(.04f, .9f, 1);
@@ -251,7 +251,7 @@ public class Boss extends Entity {
             MeshMap.render("quad");
         } else if (lasercharge) {
             TextureMap.bindUnfiltered("laser");
-            Uniform.varFloat("spriteInfo", 3, 1, laserAnim / 3);
+            Uniform.vec("spriteInfo", 3, 1, laserAnim / 3);
             mat.setIdentity();
             mat.translate(pos[0], pos[1]);
             mat.scale(.002f, .9f, 1);
